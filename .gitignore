@@ -1,0 +1,4 @@
+.alpackages/
+.codeAnalysis/
+.vscode/
+*.app
