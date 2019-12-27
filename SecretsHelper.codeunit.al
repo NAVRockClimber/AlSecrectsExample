@@ -21,14 +21,15 @@ codeunit 70001 "Secret Helper"
         SecretValue: Text;
         PlainBuffer: Text;
     begin
-        if IsolatedStorage.Contains(KeyName, DataScope::Module) then begin
-            if IsolatedStorage.Get(KeyName, DataScope::Module, SecretValue) then begin
-                if EncryptionEnabled() then begin
-                    PlainBuffer := Decrypt(SecretValue);
-                    exit(PlainBuffer);
-                end;
-            end;
-        end;
+        if not EncryptionEnabled() then
+            exit('');
+        if not IsolatedStorage.Contains(KeyName, DataScope::Module) then
+            exit('');
+        if not IsolatedStorage.Get(KeyName, DataScope::Module, SecretValue) then
+            exit('');
+
+        PlainBuffer := Decrypt(SecretValue);
+        exit(PlainBuffer);
     end;
 
     [NonDebuggable]
